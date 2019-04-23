@@ -1,6 +1,6 @@
 # DOM Manipulation
 
-## Document Object Model (DOM)
+### Document Object Model (DOM)
 
 - Structured representation of HTML document
 
