@@ -45,21 +45,41 @@ document.querySelector(".btn-roll").addEventListener("click", function() {
     roundScore += dice;
     document.querySelector("#current-" + activePlayer).textContent = roundScore;
   } else {
-    document.getElementById("current-" + activePlayer).textContent = 0;
-    // document
-    //   .querySelector(".player-" + activePlayer + "-panel")
-    //   .classList.remove("active");
-    document
-      .querySelector(".player-" + activePlayer + "-panel")
-      .classList.toggle("active");
-    roundScore = 0;
-    activePlayer = activePlayer === 0 ? 1 : 0;
-    document
-      .querySelector(".player-" + activePlayer + "-panel")
-      .classList.toggle("active");
-    // document
-    //   .querySelector(".player-" + activePlayer + "-panel")
-    //   .classList.add("active");
-    document.querySelector(".dice").style.display = "none";
+    switchPlayer();
   }
 });
+
+document.querySelector(".btn-hold").addEventListener("click", function() {
+  // player elected to hold current score
+  scores[activePlayer] += roundScore;
+  // update UI
+  document.getElementById("score-" + activePlayer).textContent =
+    scores[activePlayer];
+  // check if player won the game
+  if (scores[activePlayer] >= 10) {
+    document.querySelector("#name-" + activePlayer).textContent =
+      "Winner, winner chicken dinner!";
+    document.querySelector(".dice").style.display = "none";
+    document
+      .querySelector(".player-" + activePlayer + "-panel")
+      .classList.add("winner");
+    document
+      .querySelector(".player-" + activePlayer + "-panel")
+      .classList.remove("active");
+  } else {
+    switchPlayer();
+  }
+});
+
+function switchPlayer() {
+  document.getElementById("current-" + activePlayer).textContent = 0;
+  document
+    .querySelector(".player-" + activePlayer + "-panel")
+    .classList.toggle("active");
+  roundScore = 0;
+  activePlayer = activePlayer === 0 ? 1 : 0;
+  document
+    .querySelector(".player-" + activePlayer + "-panel")
+    .classList.toggle("active");
+  document.querySelector(".dice").style.display = "none";
+}
