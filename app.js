@@ -15,17 +15,30 @@ var scores = [0, 0];
 var roundScore = 0;
 // Who's turn is it? (0 == player1, 1 == player2)
 var activePlayer = 1;
-// Keep track of dice value
-var dice = Math.floor(Math.random() * 6) + 1;
-console.log(dice);
 
 // Mutate element on HTML document
-document.querySelector("#current-" + activePlayer).textContent = dice;
+// document.querySelector("#current-" + activePlayer).textContent = dice;
 // document.querySelector("#current-" + activePlayer).innerHTML = "<em>" + dice + "</em>";
-
 // Read element on HTML document
-var x = document.querySelector("#score-0").textContent;
-console.log(x);
+// var x = document.querySelector("#score-0").textContent;
+// console.log(x);
 
+// Set initial state of the board
 // Change CSS style of element
 document.querySelector(".dice").style.display = "none";
+document.getElementById("score-0").textContent = "0";
+document.getElementById("score-1").textContent = "0";
+document.getElementById("current-0").textContent = "0";
+document.getElementById("current-1").textContent = "0";
+
+// Setup event handler
+document.querySelector(".btn-roll").addEventListener("click", function() {
+  // generate random number
+  var dice = Math.floor(Math.random() * 6) + 1;
+  // display result
+  var dieDOM = document.querySelector(".dice");
+  dieDOM.style.display = "block";
+  dieDOM.src = "dice-" + dice + ".png";
+
+  // update round score IF the rolled number was NOT a 1
+});
