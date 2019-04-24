@@ -9,51 +9,62 @@ GAME RULES:
 
 */
 // Keep track of player scores
-var scores = [0, 0];
+var scores;
 // Keep track of round score
-var roundScore = 0;
+var roundScore;
 // Who's turn is it? (0 == player1, 1 == player2)
-var activePlayer = 0;
+var activePlayer;
+// Have winning conditions been met?
+var gamePlaying;
 
 ini();
 
 // Setup event handler
 document.querySelector(".btn-roll").addEventListener("click", function() {
-  // generate random number
-  var dice = Math.floor(Math.random() * 6) + 1;
-  // display result
-  var dieDOM = document.querySelector(".dice");
-  dieDOM.style.display = "block";
-  dieDOM.src = "dice-" + dice + ".png";
+  if (gamePlaying) {
+    // generate random number
+    var dice = Math.floor(Math.random() * 6) + 1;
+    // display result
+    var dieDOM = document.querySelector(".dice");
+    dieDOM.style.display = "block";
+    dieDOM.src = "dice-" + dice + ".png";
 
-  // update round score IF the rolled number was NOT a 1
-  if (dice !== 1) {
-    roundScore += dice;
-    document.querySelector("#current-" + activePlayer).textContent = roundScore;
-  } else {
-    switchPlayer();
+    // update round score IF the rolled number was NOT a 1
+    if (dice !== 1) {
+      roundScore += dice;
+      document.querySelector(
+        "#current-" + activePlayer
+      ).textContent = roundScore;
+    } else {
+      switchPlayer();
+    }
   }
 });
 
 document.querySelector(".btn-hold").addEventListener("click", function() {
-  // player elected to hold current score
-  scores[activePlayer] += roundScore;
-  // update UI
-  document.getElementById("score-" + activePlayer).textContent =
-    scores[activePlayer];
-  // check if player won the game
-  if (scores[activePlayer] >= 100) {
-    document.querySelector("#name-" + activePlayer).textContent =
-      "Winner, winner chicken dinner!";
-    document.querySelector(".dice").style.display = "none";
-    document
-      .querySelector(".player-" + activePlayer + "-panel")
-      .classList.add("winner");
-    document
-      .querySelector(".player-" + activePlayer + "-panel")
-      .classList.remove("active");
+  if (gamePlaying) {
+    // player elected to hold current score
+    scores[activePlayer] += roundScore;
+    // update UI
+    document.getElementById("score-" + activePlayer).textContent =
+      scores[activePlayer];
+    // check if player won the game
+    if (scores[activePlayer] >= 100) {
+      document.querySelector("#name-" + activePlayer).textContent =
+        "Winner, winner chicken dinner!";
+      document.querySelector(".dice").style.display = "none";
+      document
+        .querySelector(".player-" + activePlayer + "-panel")
+        .classList.add("winner");
+      document
+        .querySelector(".player-" + activePlayer + "-panel")
+        .classList.remove("active");
+      gamePlaying = false;
+    } else {
+      switchPlayer();
+    }
   } else {
-    switchPlayer();
+    // make some ui elements inactive
   }
 });
 
@@ -76,6 +87,7 @@ function ini() {
   scores = [0, 0];
   roundScore = 0;
   activePlayer = 0;
+  gamePlaying = true;
 
   // Set initial state of the board
   // Change CSS style of element
