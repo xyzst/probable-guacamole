@@ -14,7 +14,7 @@ var scores = [0, 0];
 // Keep track of round score
 var roundScore = 0;
 // Who's turn is it? (0 == player1, 1 == player2)
-var activePlayer = 1;
+var activePlayer = 0;
 
 // Mutate element on HTML document
 // document.querySelector("#current-" + activePlayer).textContent = dice;
@@ -41,4 +41,25 @@ document.querySelector(".btn-roll").addEventListener("click", function() {
   dieDOM.src = "dice-" + dice + ".png";
 
   // update round score IF the rolled number was NOT a 1
+  if (dice !== 1) {
+    roundScore += dice;
+    document.querySelector("#current-" + activePlayer).textContent = roundScore;
+  } else {
+    document.getElementById("current-" + activePlayer).textContent = 0;
+    // document
+    //   .querySelector(".player-" + activePlayer + "-panel")
+    //   .classList.remove("active");
+    document
+      .querySelector(".player-" + activePlayer + "-panel")
+      .classList.toggle("active");
+    roundScore = 0;
+    activePlayer = activePlayer === 0 ? 1 : 0;
+    document
+      .querySelector(".player-" + activePlayer + "-panel")
+      .classList.toggle("active");
+    // document
+    //   .querySelector(".player-" + activePlayer + "-panel")
+    //   .classList.add("active");
+    document.querySelector(".dice").style.display = "none";
+  }
 });
